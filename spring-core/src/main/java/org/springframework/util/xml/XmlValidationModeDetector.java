@@ -81,6 +81,7 @@ public class XmlValidationModeDetector {
 
 
 	/**
+	 * 根据读到的文档内容第一行是否包含 DOCTYPE 字符串，如果是则xml文件校验类型为xsd,
 	 * Detect the validation mode for the XML document in the supplied {@link InputStream}.
 	 * <p>Note that the supplied {@link InputStream} is closed by this method before returning.
 	 * @param inputStream the InputStream to parse

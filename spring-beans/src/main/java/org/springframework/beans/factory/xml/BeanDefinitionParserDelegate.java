@@ -435,6 +435,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
+		//如果没有指定bean的名称，就根据Spring的命名规则生成bean的名称
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
 				try {
@@ -507,6 +508,8 @@ public class BeanDefinitionParserDelegate {
 			className = ele.getAttribute(CLASS_ATTRIBUTE).trim();
 		}
 		String parent = null;
+		// 父子类bean：https://www.cnblogs.com/linglongfang/p/12722799.html
+		// xml的属性：https://blog.csdn.net/w7635122886/article/details/128564765?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170999542816800213069330%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=170999542816800213069330&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-128564765-null-null.142^v99^pc_search_result_base4&utm_term=spring%E4%B8%ADbean%E7%9A%84xml%E9%85%8D%E7%BD%AE&spm=1018.2226.3001.4187
 		if (ele.hasAttribute(PARENT_ATTRIBUTE)) {
 			parent = ele.getAttribute(PARENT_ATTRIBUTE);
 		}
@@ -516,12 +519,15 @@ public class BeanDefinitionParserDelegate {
 
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
-
+			// 解析子元素 meta
 			parseMetaElements(ele, bd);
+			// 解析lookUp子元素
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+			// 解析replaceMethod 子元素
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
-
+			// 解析子元素contructior-arg
 			parseConstructorArgElements(ele, bd);
+			// 解析子元素property
 			parsePropertyElements(ele, bd);
 			parseQualifierElements(ele, bd);
 
@@ -564,6 +570,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		else if (containingBean != null) {
 			// Take default from containing bean in case of an inner bean definition.
+			// 在嵌入beanDefinition的情况下且没有单独指定scope属性z则使用父类默认的属性
 			bd.setScope(containingBean.getScope());
 		}
 
@@ -576,10 +583,10 @@ public class BeanDefinitionParserDelegate {
 			lazyInit = this.defaults.getLazyInit();
 		}
 		bd.setLazyInit(TRUE_VALUE.equals(lazyInit));
-
+		// autowire 属性的作用：https://blog.csdn.net/qq_30081043/article/details/107531417
 		String autowire = ele.getAttribute(AUTOWIRE_ATTRIBUTE);
 		bd.setAutowireMode(getAutowireMode(autowire));
-
+		// dependsOn 属性的作用：https://blog.csdn.net/qq_41474525/article/details/127868927
 		if (ele.hasAttribute(DEPENDS_ON_ATTRIBUTE)) {
 			String dependsOn = ele.getAttribute(DEPENDS_ON_ATTRIBUTE);
 			bd.setDependsOn(StringUtils.tokenizeToStringArray(dependsOn, MULTI_VALUE_ATTRIBUTE_DELIMITERS));

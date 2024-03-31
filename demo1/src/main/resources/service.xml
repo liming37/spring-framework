@@ -4,4 +4,6 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="helloService" class="com.llm.service.HelloService"/>
+	<bean id="helloWorldService" class="com.llm.service.HelloWorldService"/>
+
 </beans>
