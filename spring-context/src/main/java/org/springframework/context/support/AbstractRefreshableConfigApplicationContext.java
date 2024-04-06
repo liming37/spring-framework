@@ -122,6 +122,7 @@ public abstract class AbstractRefreshableConfigApplicationContext extends Abstra
 	 * @see org.springframework.core.env.Environment#resolveRequiredPlaceholders(String)
 	 */
 	protected String resolvePath(String path) {
+		// 如果路径中包含特殊符号，如${var}，那么在resolvePath中会搜索匹配的系统变量并进行替换
 		return getEnvironment().resolveRequiredPlaceholders(path);
 	}
 

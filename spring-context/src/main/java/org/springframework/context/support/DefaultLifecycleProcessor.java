@@ -139,6 +139,10 @@ public class DefaultLifecycleProcessor implements LifecycleProcessor, BeanFactor
 
 	// Internal helpers
 
+	/**
+	 * 启动所有实现来Lifecycle接口的bean
+	 * @param autoStartupOnly
+	 */
 	private void startBeans(boolean autoStartupOnly) {
 		Map<String, Lifecycle> lifecycleBeans = getLifecycleBeans();
 		Map<Integer, LifecycleGroup> phases = new TreeMap<>();

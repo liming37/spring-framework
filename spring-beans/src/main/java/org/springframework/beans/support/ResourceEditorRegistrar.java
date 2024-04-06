@@ -117,6 +117,7 @@ public class ResourceEditorRegistrar implements PropertyEditorRegistrar {
 		doRegisterEditor(registry, Class[].class, new ClassArrayEditor(classLoader));
 
 		if (this.resourceLoader instanceof ResourcePatternResolver) {
+			// 看
 			doRegisterEditor(registry, Resource[].class,
 					new ResourceArrayPropertyEditor((ResourcePatternResolver) this.resourceLoader, this.propertyResolver));
 		}

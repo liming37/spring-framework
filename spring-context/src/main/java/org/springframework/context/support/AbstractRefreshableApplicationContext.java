@@ -119,14 +119,22 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		// 关闭上一个工厂，如果存在的话，并销毁相关的bean
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
 		}
 		try {
+			// 创建DefaultListableBeanFactory，
+			// 在介绍BeanFactory的时候，XmlBeanFactory继承自DefaultListableBeanFactory，
+			// 并提供来XmlBeanDefinitionReader类型的reder属性，也就是说DefaultListableBeanFactory
+			// 是容器的基础。必须首先要实例化
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			// 为了序列化指定 id，如果需要的话，让这个BeanFactory从id反序列化到BeanFactory对象
 			beanFactory.setSerializationId(getId());
+			// 定制beanFactory，设置相关属性，包括是否允许覆盖同名的不同定义的对象以及循环依赖以及
 			customizeBeanFactory(beanFactory);
+			// 初始化DocumentReader，并进行XML文件读取及解析
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		}
@@ -212,9 +220,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * @see DefaultListableBeanFactory#setAllowEagerClassLoading
 	 */
 	protected void customizeBeanFactory(DefaultListableBeanFactory beanFactory) {
+		// allowBeanDefinitionOverriding 属性的含义：是否允许覆盖同名称的不同定义的对象
 		if (this.allowBeanDefinitionOverriding != null) {
 			beanFactory.setAllowBeanDefinitionOverriding(this.allowBeanDefinitionOverriding);
 		}
+		// 此属性的含义：是否允许bean之间存在循环依赖
 		if (this.allowCircularReferences != null) {
 			beanFactory.setAllowCircularReferences(this.allowCircularReferences);
 		}

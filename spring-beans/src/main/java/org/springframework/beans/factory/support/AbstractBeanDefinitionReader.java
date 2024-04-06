@@ -193,6 +193,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		Assert.notNull(resources, "Resource array must not be null");
 		int count = 0;
 		for (Resource resource : resources) {
+			// 看
 			count += loadBeanDefinitions(resource);
 		}
 		return count;
@@ -200,6 +201,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 
 	@Override
 	public int loadBeanDefinitions(String location) throws BeanDefinitionStoreException {
+		// 看
 		return loadBeanDefinitions(location, null);
 	}
 
@@ -247,6 +249,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		else {
 			// Can only load single resources by absolute URL.
 			Resource resource = resourceLoader.getResource(location);
+			// 又回到XmlBeanDefinitionReader
 			int count = loadBeanDefinitions(resource);
 			if (actualResources != null) {
 				actualResources.add(resource);
@@ -263,6 +266,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		Assert.notNull(locations, "Location array must not be null");
 		int count = 0;
 		for (String location : locations) {
+			// 看
 			count += loadBeanDefinitions(location);
 		}
 		return count;
